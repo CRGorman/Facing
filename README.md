@@ -43,3 +43,6 @@ This can be most useful in cleaving situations, or weapon trials with [premevial
 2. Edit the addon's settings file: **Windower4\addons\facing\data\settings.xml**
 3. Save the file
 4. Type ```//lua r facing``` in the chat box to reload the addon configuration
+
+## Thanks
+Built with help from Rubenator.
