@@ -41,8 +41,8 @@ local _defaults = {
     text_settings = {
         draggable = true,
         pos = {
-            x = 0,
-            y = 0,
+            x = 800,
+            y = 1000,
         },
         bg = {
             alpha = 255,
@@ -61,7 +61,10 @@ local _defaults = {
         padding = 2,
         text = {
             font = "Consolas",
-            size = 12,
+            size = 20,
+            red = 255,
+            green = 255,
+            blue = 255,
             stroke = {
                 width = 2,
                 visible = true,
@@ -69,10 +72,43 @@ local _defaults = {
                 green = 0,
                 blue = 0,
                 alpha = 150,
-            }
+            },
+        },
+        text_with_tp = {
+            font = "Consolas",
+            size = 20,
+            red = 0,
+            green = 255,
+            blue = 0,
+            stroke =
+            {
+                width = 2,
+                visible = true,
+                red = 255,
+                green = 255,
+                blue = 255,
+                alpha = 150,
+            },
+        },
+        text_without_tp = {
+            font = "Consolas",
+            size = 20,
+            red = 255,
+            green = 255,
+            blue = 0,
+            stroke =
+            {
+                width = 2,
+                visible = true,
+                red = 255,
+                green = 255,
+                blue = 255,
+                alpha = 150,
+            },
         },
     },
 }
+
 
 local settings = config.load(_defaults)
 local text = texts.new("${left}${angle}${right}",settings.text_settings,settings)
@@ -89,9 +125,6 @@ end
 init()
 
 local pi = math.pi
-
-local pi = math.pi
---local compass = {"E","ENE","NE","NNE","N","NNW","NW","WNW","W","WSW","SW","SSW","S","SSE","SE","ESE",}
 
 function getAngle(me,point)
     local dir = V{point.x, point.y} - V{me.x, me.y}
@@ -120,12 +153,12 @@ windower.register_event('prerender', function()
 
     if degrees:abs() < settings.max_ws_angle then
         if windower.ffxi.get_player().vitals.tp >= 1000 then
-            text:color(0,255,0)
+            text:color(settings.text_settings.text_with_tp.red,settings.text_settings.text_with_tp.green,settings.text_settings.text_with_tp.blue)
         else
-            text:color(255,255,0)
+            text:color(settings.text_settings.text_without_tp.red,settings.text_settings.text_without_tp.green,settings.text_settings.text_without_tp.blue)
         end
     else
-        text:color(255,255,255)
+        text:color(settings.text_settings.text.red,settings.text_settings.text.green,settings.text_settings.text.blue)
     end
     text:show()
     

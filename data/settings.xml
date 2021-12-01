@@ -1,8 +1,7 @@
 <?xml version="1.1" ?>
 <settings>
     <global>
-        <debugmode>false</debugmode>
-        <max_ws_angle>46</max_ws_angle>
+        <max_ws_angle>42</max_ws_angle>
         <text_settings>
             <bg>
                 <alpha>255</alpha>
@@ -21,8 +20,8 @@
             </flags>
             <padding>2</padding>
             <pos>
-                <x>0</x>
-                <y>0</y>
+                <x>800</x>
+                <y>1000</y>
             </pos>
             <text>
                 <alpha>255</alpha>
@@ -43,16 +42,36 @@
                     <width>2</width>
                 </stroke>
             </text>
+            <text_with_tp>
+                <blue>0</blue>
+                <font>Consolas</font>
+                <green>255</green>
+                <red>0</red>
+                <size>20</size>
+                <stroke>
+                    <alpha>150</alpha>
+                    <blue>255</blue>
+                    <green>255</green>
+                    <red>255</red>
+                    <visible>true</visible>
+                    <width>2</width>
+                </stroke>
+            </text_with_tp>
+            <text_without_tp>
+                <blue>0</blue>
+                <font>Consolas</font>
+                <green>255</green>
+                <red>255</red>
+                <size>20</size>
+                <stroke>
+                    <alpha>150</alpha>
+                    <blue>255</blue>
+                    <green>255</green>
+                    <red>255</red>
+                    <visible>true</visible>
+                    <width>2</width>
+                </stroke>
+            </text_without_tp>
         </text_settings>
-        <x_pos>800</x_pos>
-        <y_pos>500</y_pos>
     </global>
-    <nerasserenity>
-        <text_settings>
-            <pos>
-                <x>800</x>
-                <y>1000</y>
-            </pos>
-        </text_settings>
-    </nerasserenity>
 </settings>
