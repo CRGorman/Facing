@@ -120,7 +120,7 @@ function init()
     pos = settings.text_settings.pos
     pos.x = pos.x < -10 and 0 or pos.x >= windower_settings.ui_x_res and windower_settings.ui_x_res - 100 or pos.x
     pos.y = pos.y < -5 and 0 or pos.y >= windower_settings.ui_y_res and windower_settings.ui_y_res - 100 or pos.y
-    text:pos(settings.text_settings.pos.x, settings.text_settings.pos.x)
+    text:pos(settings.text_settings.pos.x, settings.text_settings.pos.y)
 end
 init()
 
