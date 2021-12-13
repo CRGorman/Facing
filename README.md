@@ -34,7 +34,7 @@ The indicator will show straight brackets when you are likely within swinging or
 
 With it you can easily face your opponents and shut them down.
 
-![All dead.]( http://ffxi.zeroserenity.com/Facing/CorpsePile.png)
+![All dead.](http:// ffxi.zeroserenity.com/Facing/CorpsePile.png)
 
 This can be most useful in cleaving situations, or weapon trials with [premevial brew](https://www.bg-wiki.com/ffxi/Primeval_Brew).
 
