@@ -112,21 +112,21 @@ local _defaults = {
 
 local directions = {
     west = math.pi,
-    westwestsouth = 5 * math.pi / 6 ,
+    westsouthwest = 5 * math.pi / 6 ,
     southwest = 3 * math.pi / 4,
     southsouthwest = 2 * math.pi / 3,
     south = math.pi / 2,
     southsoutheast = math.pi / 3,
     southeast = math.pi/4,
-    easteastsouth = math.pi/6,
+    eastsoutheast = math.pi/6,
     east = 0,
-    easteastnorth = 11*math.pi/6,
+    eastnortheast = 11*math.pi/6,
     northeast = 7 * math.pi / 4,
     northnortheast = 5 * math.pi / 3,
     north = 3 * math.pi / 2,
     northnorthwest = 4 * math.pi / 3,
     northwest = 5 * math.pi / 4,
-    westwestnorth = 7 * math.pi / 6,
+    westnorthwest = 7 * math.pi / 6,
     -- this is how big of a step turning left or right will do. 
     step = math.pi/4
 }
@@ -244,7 +244,7 @@ windower.register_event('addon command', function(command, arg)
     elseif S{'west', 'w'}:contains(command) then
         setFacing(directions.west)
     elseif S{'westsouthwest', 'wsw'}:contains(command) then
-        setFacing(directions.westwestsouth)
+        setFacing(directions.westsouthwest)
     elseif S{'southwest', 'sw'}:contains(command) then
         setFacing(directions.southwest)
     elseif S{'southsouthwest', 'ssw'}:contains(command) then
@@ -256,11 +256,11 @@ windower.register_event('addon command', function(command, arg)
     elseif S{'southeast', 'se'}:contains(command) then
         setFacing(directions.southeast)
     elseif S{'eastsoutheast', 'ese'}:contains(command) then
-        setFacing(directions.easteastsouth)
+        setFacing(directions.eastsoutheast)
     elseif S{'east', 'se'}:contains(command) then
         setFacing(directions.east)
     elseif S{'eastnortheast', 'ene'}:contains(command) then
-        setFacing(directions.easteastnorth)
+        setFacing(directions.eastnortheast)
     elseif S{'northeast', 'ne'}:contains(command) then
         setFacing(directions.northeast)
     elseif S{'northnortheast', 'nne'}:contains(command) then
@@ -272,7 +272,7 @@ windower.register_event('addon command', function(command, arg)
     elseif S{'northwest', 'nw'}:contains(command) then
         setFacing(directions.northwest)
     elseif S{'westnorthwest', 'wnw'}:contains(command) then
-        setFacing(directions.westwestnorth)
+        setFacing(directions.westnorthwest)
 
     -- visibility options
     elseif S{'hide'}:contains(command) then
