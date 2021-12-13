@@ -38,6 +38,20 @@ With it you can easily face your opponents and shut them down.
 
 This can be most useful in cleaving situations, or weapon trials with [premevial brew](https://www.bg-wiki.com/ffxi/Primeval_Brew).
 
+## Commands
+
+* USAGE: facing \[options\]
+  
+| Command | Description |
+| --- | --- |
+| face, ft, f | face target |
+| hide | hide the display |
+| show | show the display |
+| visible, v | toggle the display |
+| save | save settings |
+| help | display in game help |
+
+
 ## How to edit the settings
 1. Login to your character in FFXI
 2. Edit the addon's settings file: **Windower4\addons\facing\data\settings.xml**

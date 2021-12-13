@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 _addon.name = 'Facing'
-_addon.version = '0.3'
-_addon.author = 'Zero Serenity, Rubenator'
+_addon.version = '0.3.1'
+_addon.author = 'Zero Serenity, Rubenator, modified by Nattack'
 _addon.language = 'english'
 _addon.commands = {'facing'}
 
@@ -37,6 +37,7 @@ config = require('config')
 local texts = require('texts')
 
 local _defaults = {
+    isVisible=true,
     max_ws_angle = 42,
     text_settings = {
         draggable = true,
@@ -121,10 +122,18 @@ function init()
     pos.x = pos.x < -10 and 0 or pos.x >= windower_settings.ui_x_res and windower_settings.ui_x_res - 100 or pos.x
     pos.y = pos.y < -5 and 0 or pos.y >= windower_settings.ui_y_res and windower_settings.ui_y_res - 100 or pos.y
     text:pos(settings.text_settings.pos.x, settings.text_settings.pos.y)
+    isVisible = settings.isVisible
+    lastcheck = 0
 end
 init()
 
-local pi = math.pi
+function getMe()
+    return windower.ffxi.get_mob_by_target('me')
+end
+
+function getTarget()
+    return (windower.ffxi.get_mob_by_target('st') or windower.ffxi.get_mob_by_target('t'))
+end
 
 function getAngle(me,point)
     local dir = V{point.x, point.y} - V{me.x, me.y}
@@ -133,33 +142,92 @@ function getAngle(me,point)
     return angle
 end
 
-local lastcheck = 0
+function setFacingToTarget(me, target)
+    local _me = me or getMe()
+    local _target = target or getTarget()
+    if (_me and _target) and _me ~= _target then
+        windower.ffxi.turn(getAngle(_me, _target) + _me.facing)
+    end
+end
 
 windower.register_event('prerender', function()
-    local clock = os.clock()
-    if lastcheck + 0.1 > clock then return end
-    lastcheck = clock
-    local me = windower.ffxi.get_mob_by_target('me')
-    local target = windower.ffxi.get_mob_by_target('st') or windower.ffxi.get_mob_by_target('t')
-    if not me or not target or me.id == target.id then
-        text:hide()
-        return
-    end
-    
-    local degrees = math.deg(getAngle(me, target))
-    text.left = degrees < settings.max_ws_angle * -1 and "<" or degrees > settings.max_ws_angle and " " or "|"
-    text.right = degrees > settings.max_ws_angle and ">" or degrees < settings.max_ws_angle * -1 and " " or "|"
-    text.angle = "%03.0f":format(math.floor(degrees:abs()+0.5))
-
-    if degrees:abs() < settings.max_ws_angle then
-        if windower.ffxi.get_player().vitals.tp >= 1000 then
-            text:color(settings.text_settings.text_with_tp.red,settings.text_settings.text_with_tp.green,settings.text_settings.text_with_tp.blue)
-        else
-            text:color(settings.text_settings.text_without_tp.red,settings.text_settings.text_without_tp.green,settings.text_settings.text_without_tp.blue)
+    if isVisible then
+        local clock = os.clock()
+        if lastcheck + 0.1 > clock then return end
+        lastcheck = clock
+        local me = getMe()
+        local target = getTarget()
+        if not me or not target or me.id == target.id then
+            text:hide()
+            return
         end
-    else
-        text:color(settings.text_settings.text.red,settings.text_settings.text.green,settings.text_settings.text.blue)
+    
+        local degrees = math.deg(getAngle(me, target))
+        text.left = degrees < settings.max_ws_angle * -1 and "<" or degrees > settings.max_ws_angle and " " or "|"
+        text.right = degrees > settings.max_ws_angle and ">" or degrees < settings.max_ws_angle * -1 and " " or "|"
+        text.angle = "%03.0f":format(math.floor(degrees:abs()+0.5))
+
+        if degrees:abs() < settings.max_ws_angle then
+            if windower.ffxi.get_player().vitals.tp >= 1000 then
+                text:color(settings.text_settings.text_with_tp.red,settings.text_settings.text_with_tp.green,settings.text_settings.text_with_tp.blue)
+            else
+                text:color(settings.text_settings.text_without_tp.red,settings.text_settings.text_without_tp.green,settings.text_settings.text_without_tp.blue)
+            end
+        else
+            text:color(settings.text_settings.text.red,settings.text_settings.text.green,settings.text_settings.text.blue)
+        end
+        text:show()
     end
-    text:show()
     
 end)
+
+windower.register_event('addon command', function(command, ...)
+    local function echo(color, ...)
+        for _,msg in ipairs(arg) do
+            windower.add_to_chat(color, msg)
+        end
+    end
+
+    command = command and command:lower() or 'help'
+    -- face the target
+    if S{'f', 'ft','face'}:contains(command) then 
+        setFacingToTarget()
+    
+    -- visibility options
+    elseif S{'hide'}:contains(command) then
+        isVisible = false
+        text:hide()
+
+    elseif S{'show'}:contains(command) then 
+        isVisible = true
+
+    elseif S{'v', 'visible'}:contains(command) then
+        isVisible = not isVisible
+        if not isVisible then text:hide() end
+    
+    -- misc
+    elseif S{'save'}:contains(command) then
+        config.save('all')
+    elseif S{'?', 'h', 'help'}:contains(command) then 
+        local col = 17
+        echo(col,
+            'Facing v' .. _addon.version,
+            'Usage: facing [options]',
+            'OPTIONS: ',
+            '   face, f, ft',
+            '       face target',
+            '   hide',
+            '       hide text',
+            '   show',
+            '       show text',
+            '   visible, v',
+            '       toggle visibility',
+            '   save',
+            '       save state',
+            '   help, h',
+            '       this help menu.'
+        )
+    end
+end)
+
+
