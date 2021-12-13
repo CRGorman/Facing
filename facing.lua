@@ -221,7 +221,7 @@ windower.register_event('addon command', function(command, arg)
         if target and me ~= target then
             setFacing(getAngle(me, target) + me.facing)
         end
-    if S{'t', 'turn', 'petrifaction'}:contains(command) then
+    elseif S{'t', 'turn', 'petrifaction'}:contains(command) then
         local me = getMe()
         setFacing(me.facing + math.pi)
     elseif S{'left', 'right'}:contains(command) then
