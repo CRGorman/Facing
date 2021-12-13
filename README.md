@@ -44,7 +44,7 @@ This can be most useful in cleaving situations, or weapon trials with [premevial
   
 | Command | Description |
 | --- | --- |
-| face, ft, f | face target |
+| target, ft, f, face | face target |
 | away, a | face away from target |
 | turn, t | turn about face |
 | left | turn left |
