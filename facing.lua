@@ -36,6 +36,9 @@ require('vectors')
 config = require('config')
 local texts = require('texts')
 
+-- chatbox text colour
+local col = 17
+
 local _defaults = {
     isVisible=true,
     max_ws_angle = 42,
@@ -212,7 +215,6 @@ windower.register_event('addon command', function(command, arg)
             windower.add_to_chat(color, msg)
         end
     end
-    local col = 17
 
     command = command and command:lower() or 'help'
     -- turning commands
@@ -297,7 +299,6 @@ windower.register_event('addon command', function(command, arg)
         settings.isVisible = isVisible
         config.save(settings)
     elseif S{'?', 'h', 'help'}:contains(command) then 
-        local col = 17
         echo(col,
             'Facing v' .. _addon.version,
             'Usage: facing [options]',
@@ -320,7 +321,6 @@ windower.register_event('addon command', function(command, arg)
             '       this help menu.'
         )
     else
-        local col = 17
         echo(col, 'Facing: Unknown command: ' .. command)
     end
 end)
