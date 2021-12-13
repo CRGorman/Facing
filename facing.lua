@@ -30,7 +30,7 @@ _addon.name = 'Facing'
 _addon.version = '0.3.1'
 _addon.author = 'Zero Serenity, Rubenator, modified by Nattack'
 _addon.language = 'english'
-_addon.commands = {'facing'}
+_addon.commands = {'facing', 'face'}
 
 require('vectors')
 config = require('config')
@@ -212,16 +212,23 @@ windower.register_event('addon command', function(command, arg)
             windower.add_to_chat(color, msg)
         end
     end
+    local col = 17
 
     command = command and command:lower() or 'help'
     -- turning commands
-    if S{'f', 'ft','face','facetarget'}:contains(command) then 
+    if S{'f', 'ft','face','target'}:contains(command) then 
         local me = getMe()
         local target = getTarget()
         if target and me ~= target then
             setFacing(getAngle(me, target) + me.facing)
         end
-    elseif S{'t', 'turn', 'petrifaction'}:contains(command) then
+    elseif S{'a', 'away', 'petrifaction'}:contains(command) then
+        local me = getMe()
+        local target = getTarget()
+        if target and me ~= target then
+            setFacing(getAngle(me, target) + me.facing + math.pi)
+        end
+    elseif S{'t', 'turn'}:contains(command) then
         local me = getMe()
         setFacing(me.facing + math.pi)
     elseif S{'left', 'right'}:contains(command) then
@@ -271,17 +278,24 @@ windower.register_event('addon command', function(command, arg)
     elseif S{'hide'}:contains(command) then
         isVisible = false
         text:hide()
+        echo(col, 'Facing: disabling display')
 
     elseif S{'show'}:contains(command) then 
         isVisible = true
+        echo(col, 'Facing: enabling display')
 
     elseif S{'v', 'visible'}:contains(command) then
         isVisible = not isVisible
-        if not isVisible then text:hide() end
-    
+        if isVisible then
+            echo(col, 'Facing: toggled display on')
+        else
+            text:hide()
+            echo(col, 'Facing: toggled display off')
+        end
     -- misc
     elseif S{'save'}:contains(command) then
-        config.save('all')
+        settings.isVisible = isVisible
+        config.save(settings)
     elseif S{'?', 'h', 'help'}:contains(command) then 
         local col = 17
         echo(col,
@@ -290,6 +304,8 @@ windower.register_event('addon command', function(command, arg)
             'OPTIONS: ',
             '   face, f, ft',
             '       face target',
+            '   away, a',
+            '       face away from target',
             '   turn, t',
             '       turn about face'
             '   left, right',
