@@ -110,6 +110,27 @@ local _defaults = {
     },
 }
 
+local directions = {
+    west = math.pi,
+    westwestsouth = 5 * math.pi / 6 ,
+    southwest = 3 * math.pi / 4,
+    southsouthwest = 2 * math.pi / 3,
+    south = math.pi / 2,
+    southsoutheast = math.pi / 3,
+    southeast = math.pi/4,
+    easteastsouth = math.pi/6,
+    east = 0,
+    easteastnorth = 11*math.pi/6,
+    northeast = 7 * math.pi / 4,
+    northnortheast = 5 * math.pi / 3,
+    north = 3 * math.pi / 2,
+    northnorthwest = 4 * math.pi / 3,
+    northwest = 5 * math.pi / 4,
+    westwestnorth = 7 * math.pi / 6
+    -- this is how big of a step turning left or right will do. 
+    step = math.pi/4
+}
+
 
 local settings = config.load(_defaults)
 local text = texts.new("${left}${angle}${right}",settings.text_settings,settings)
@@ -142,11 +163,15 @@ function getAngle(me,point)
     return angle
 end
 
+function setFacing(angle)
+    windower.ffxi.turn(angle)
+end
+
 function setFacingToTarget(me, target)
     local _me = me or getMe()
     local _target = target or getTarget()
     if (_me and _target) and _me ~= _target then
-        windower.ffxi.turn(getAngle(_me, _target) + _me.facing)
+        setFacing(getAngle(_me, _target) + _me.facing)
     end
 end
 
@@ -181,7 +206,7 @@ windower.register_event('prerender', function()
     
 end)
 
-windower.register_event('addon command', function(command, ...)
+windower.register_event('addon command', function(command, arg)
     local function echo(color, ...)
         for _,msg in ipairs(arg) do
             windower.add_to_chat(color, msg)
@@ -189,10 +214,53 @@ windower.register_event('addon command', function(command, ...)
     end
 
     command = command and command:lower() or 'help'
-    -- face the target
+    -- turning commands
     if S{'f', 'ft','face'}:contains(command) then 
         setFacingToTarget()
     
+    elseif S{'left', 'right'}:contains(command) then
+        local me = getMe()
+        local direction  = 0
+        if command == 'left' then
+            direction = directions.step * -1
+        else
+            direction = directions.step
+        end
+        setFacing(me.facing + direction)
+    
+    elseif S{'west', 'w'}:contains(command) then
+        setFacing(directions.west)
+    elseif S{'westsouthwest', 'wsw'}:contains(command) then
+        setFacing(directions.westwestsouth)
+    elseif S{'southwest', 'sw'}:contains(command) then
+        setFacing(directions.southwest)
+    elseif S{'southsouthwest', 'ssw'}:contains(command) then
+        setFacing(directions.southsouthwest)
+    elseif S{'south', 's'}:contains(command) then
+        setFacing(directions.south)
+    elseif S{'southsoutheast', 'sse'}:contains(command) then
+        setFacing(directions.southsoutheast)
+    elseif S{'southeast', 'se'}:contains(command) then
+        setFacing(directions.southeast)
+    elseif S{'eastsoutheast', 'ese'}:contains(command) then
+        setFacing(directions.easteastsouth)
+    elseif S{'east', 'se'}:contains(command) then
+        setFacing(directions.east)
+    elseif S{'eastnortheast', 'ene'}:contains(command) then
+        setFacing(directions.easteastnorth)
+    elseif S{'northeast', 'ne'}:contains(command) then
+        setFacing(directions.northeast)
+    elseif S{'northnortheast', 'nne'}:contains(command) then
+        setFacing(directions.northnortheast)
+    elseif S{'north', 'n'}:contains(command) then
+        setFacing(directions.north)
+    elseif S{'northnorthwest', 'nnw'}:contains(command) then
+        setFacing(directions.northnorthwest)
+    elseif S{'northwest', 'nw'}:contains(command) then
+        setFacing(directions.northwest)
+    elseif S{'westnorthwest', 'wnw'}:contains(command) then
+        setFacing(directions.westwestnorth)
+
     -- visibility options
     elseif S{'hide'}:contains(command) then
         isVisible = false
@@ -216,17 +284,20 @@ windower.register_event('addon command', function(command, ...)
             'OPTIONS: ',
             '   face, f, ft',
             '       face target',
-            '   hide',
-            '       hide text',
-            '   show',
-            '       show text',
-            '   visible, v',
-            '       toggle visibility',
+            '   left, right',
+            '       turn left or right'
+            '   n, ne, e, se, s, sw, w, nw',
+            '       face a cardinal direction',
+            '   hide, show, visible, v',
+            '       hide, show, or toggle visibility',
             '   save',
             '       save state',
             '   help, h',
             '       this help menu.'
         )
+    else
+        local col = 17
+        echo(col, 'Facing: Unknown command: ' .. command)
     end
 end)
 

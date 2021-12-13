@@ -45,6 +45,9 @@ This can be most useful in cleaving situations, or weapon trials with [premevial
 | Command | Description |
 | --- | --- |
 | face, ft, f | face target |
+| left | turn left |
+| right | turn right |
+| cardinals | face a cardinal direction, n, ne, e, se, s, sw, w, nw, or intercardinal directions |
 | hide | hide the display |
 | show | show the display |
 | visible, v | toggle the display |
