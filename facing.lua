@@ -170,14 +170,6 @@ function setFacing(angle)
     windower.ffxi.turn(angle)
 end
 
-function setFacingToTarget(me, target)
-    local _me = me or getMe()
-    local _target = target or getTarget()
-    if (_me and _target) and _me ~= _target then
-        setFacing(getAngle(_me, _target) + _me.facing)
-    end
-end
-
 windower.register_event('prerender', function()
     if isVisible then
         local clock = os.clock()
