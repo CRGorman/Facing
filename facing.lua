@@ -126,7 +126,7 @@ local directions = {
     north = 3 * math.pi / 2,
     northnorthwest = 4 * math.pi / 3,
     northwest = 5 * math.pi / 4,
-    westwestnorth = 7 * math.pi / 6
+    westwestnorth = 7 * math.pi / 6,
     -- this is how big of a step turning left or right will do. 
     step = math.pi/4
 }
