@@ -215,9 +215,15 @@ windower.register_event('addon command', function(command, arg)
 
     command = command and command:lower() or 'help'
     -- turning commands
-    if S{'f', 'ft','face'}:contains(command) then 
-        setFacingToTarget()
-    
+    if S{'f', 'ft','face','facetarget'}:contains(command) then 
+        local me = getMe()
+        local target = getTarget()
+        if target and me ~= target then
+            setFacing(getAngle(me, target) + me.facing)
+        end
+    if S{'t', 'turn', 'petrifaction'}:contains(command) then
+        local me = getMe()
+        setFacing(me.facing + math.pi)
     elseif S{'left', 'right'}:contains(command) then
         local me = getMe()
         local direction  = 0
@@ -284,6 +290,8 @@ windower.register_event('addon command', function(command, arg)
             'OPTIONS: ',
             '   face, f, ft',
             '       face target',
+            '   turn, t',
+            '       turn about face'
             '   left, right',
             '       turn left or right'
             '   n, ne, e, se, s, sw, w, nw',
