@@ -1,5 +1,5 @@
 --[[
-Copyright © 2021, Zero Serenity
+--Copyright © 2021, Zero Serenity
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@ _addon.language = 'english'
 _addon.commands = {'facing', 'face'}
 
 require('vectors')
+include('parse_buffs.lua')
 config = require('config')
 local texts = require('texts')
 
@@ -166,8 +167,29 @@ function getAngle(me,point)
     return angle
 end
 
+function isLegaltoTurn()
+    -- don't turn if we're in these statuses - that would be weird
+    local legal_status_id = {0, 1, 5, 85}
+    -- don't turn if we have these status effects on
+    local illegal_effects_en = S{
+        "ko", 
+        "sleep", 
+        "petrification", 
+        "stun",
+        "charm",
+        "terror",
+    } 
+    return true
+end
+
 function setFacing(angle)
-    windower.ffxi.turn(angle)
+
+    if isLegaltoTurn() then 
+        windower.ffxi.turn(angle) 
+        return true
+    else
+        return false
+    end
 end
 
 windower.register_event('prerender', function()
@@ -202,7 +224,8 @@ windower.register_event('prerender', function()
 end)
 
 windower.register_event('addon command', function(command, arg)
-    local function echo(color, ...)
+    function echo(color, ...)
+        color = color or default_color
         for _,msg in ipairs(arg) do
             windower.add_to_chat(color, msg)
         end
@@ -300,9 +323,9 @@ windower.register_event('addon command', function(command, arg)
             '   away, a',
             '       face away from target',
             '   turn, t',
-            '       turn about face'
+            '       turn about face',
             '   left, right',
-            '       turn left or right'
+            '       turn left or right',
             '   n, ne, e, se, s, sw, w, nw',
             '       face a cardinal direction',
             '   hide, show, visible, v',
