@@ -33,5 +33,8 @@ An FFXI Windower Addon for determining what direction the player is facing in re
 3. Save the file
 4. Type ```//lua r facing``` in the chat box to reload the addon configuration
 
+## Bugs
+* Overuse may cause your character to desync from the camera. This can sometimes be fixed by zoning or logging out. Your character will still be able to act, but the camera will not move and your player will be invisible.
+
 ## Thanks
 Built with help from Rubenator.
